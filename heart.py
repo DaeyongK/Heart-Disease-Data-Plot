@@ -49,8 +49,51 @@ def create():
     
 def main():
     create()
-    plt.scatter(targetList, sexList, alpha = 0.005, c = "blue", s = 100)
+    data = load_data("heart.csv")
+    corr_matrix = data.corr(method="pearson")
+    #data[["age"]].plot.hist()
+    #with pd.option_context('display.max_columns', None):
+        #print(corr_matrix)
+    #plt.scatter(targetList, sexList, alpha = 0.005, c = "blue", s = 100)
+    ageGroup()
     plt.show()
 
 # Make a function that calculates number of ones for each category
+def ageGroup():
+    agerList = [0, 0, 0, 0, 0, 0]
+    whList = [0, 0, 0, 0, 0, 0]
+    perList = []
+    rangeList = ["20-30", "30-40", "40-50", "50-60", "60-70", "70-80"]
+    for i in range(0, len(ageList)):
+        if ageList[i] > 20 and ageList[i] <= 30:
+            agerList[0] += 1
+            if targetList[i] == 1:
+                whList[0] += 1
+        elif ageList[i] > 30 and ageList[i] <= 40:
+            agerList[1] += 1
+            if targetList[i] == 1:
+                whList[1] += 1
+        elif ageList[i] > 40 and ageList[i] <= 50:
+            agerList[2] += 1
+            if targetList[i] == 1:
+                whList[2] += 1
+        elif ageList[i] > 50 and ageList[i] <= 60:
+            agerList[3] += 1
+            if targetList[i] == 1:
+                whList[3] += 1
+        elif ageList[i] > 60 and ageList[i] <= 70:
+            agerList[4] += 1
+            if targetList[i] == 1:
+                whList[4] += 1
+        elif ageList[i] > 70 and ageList[i] <= 80:
+            agerList[5] += 1
+            if targetList[i] == 1:
+                whList[5] += 1
+    for i in range(0, len(agerList)):
+        perList.append((whList[i]/agerList[i]) * 100)
+    print(perList)
+    plt.bar(rangeList, perList)
+
+    
 main()
+
