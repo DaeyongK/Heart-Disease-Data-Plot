@@ -1,6 +1,5 @@
 import pandas as pd
 import matplotlib.pyplot as plt
-
 ageList = []
 sexList = []
 cpList = []
@@ -17,9 +16,13 @@ thalList = []
 targetList = []
 
 
+
+#Loads the data and creates a dataframe for it
 def load_data(filename):
     df = pd.read_csv(filename)
     return df
+
+
 
 #generates a list of values for a specific column
 def columnList(file, column_name, specList):
@@ -29,6 +32,8 @@ def columnList(file, column_name, specList):
     column_df = pd.read_csv("heart.csv", usecols = columns)
     for i in column_df[column_name]:
         specList.append(i)
+
+
 
 #creates lists for all columns
 def create():
@@ -46,18 +51,17 @@ def create():
     columnList(load_data("heart.csv"), "ca", caList)
     columnList(load_data("heart.csv"), "thal", thalList)
     columnList(load_data("heart.csv"), "target", targetList)
-    
-def main():
-    create()
+
+
+
+#Generates correlation matrix
+def matrix():
     data = load_data("heart.csv")
     corr_matrix = data.corr(method="pearson")
     with pd.option_context('display.max_columns', None):
         print(corr_matrix)
-    ageGroup()
-    cpGroup()
-    thalachGroup()
-    exangGroup()
-    plt.show()
+
+
 
 # Make a function that calculates number of ones for each category
 def ageGroup():
@@ -96,6 +100,32 @@ def ageGroup():
     plt.title("The Effect of Age on Chance of Heart Disease")
     plt.xlabel("Age Ranges")
     plt.ylabel("Percent with Heart Disease")
+
+
+
+def sexGroup():
+    gList = [0, 0]
+    whgList = [0, 0]
+    pergList = []
+    gxList = ["0", "1"]
+    for i in range(0, len(sexList)):
+        if sexList[i] == 0:
+            gList[0] += 1
+            if targetList[i] == 1:
+                whgList[0] += 1
+        elif sexList[i] == 1:
+            gList[1] += 1
+            if targetList[i] == 1:
+                whgList[1] += 1
+    for i in range(0, len(gList)):
+        pergList.append((whgList[i]/gList[i]) * 100)
+    plt.figure()
+    plt.bar(gxList, pergList)
+    plt.title("The Effect of Sex on Chance of Heart Disease")
+    plt.xlabel("Sex")
+    plt.ylabel("Percent with Heart Disease")
+
+
     
 def cpGroup():
     cptList = [0, 0, 0, 0]
@@ -126,6 +156,8 @@ def cpGroup():
     plt.title("The Effect of Type of Chest Pain on Chance of Heart Disease")
     plt.xlabel("Chest Pain Type")
     plt.ylabel("Percent with Heart Disease")
+
+
 
 def thalachGroup():
     tList = [0, 0, 0, 0, 0, 0, 0]
@@ -169,6 +201,8 @@ def thalachGroup():
     plt.xlabel("Maximum Heart Rate Achieved")
     plt.ylabel("Percent with Heart Disease")
 
+
+
 def exangGroup():
     eList = [0, 0]
     wheList = [0, 0]
@@ -190,5 +224,128 @@ def exangGroup():
     plt.title("The Effect of Exercise Induced Angina on Chance of Heart Disease")
     plt.xlabel("Presence of Exercise Induced Angina")
     plt.ylabel("Percent with Heart Disease")
+
+
+
+def oldGroup():
+    oldList = [0, 0, 0, 0, 0, 0]
+    wholdList = [0, 0, 0, 0, 0, 0]
+    peroldList = []
+    oldxList = ["0-0.9", "1-1.9", "2-2.9", "3-3.9", "4-4.9", "5-6.9"]
+    for i in range(0, len(oldpeakList)):
+        if oldpeakList[i] >= 0 and oldpeakList[i] < 1:
+            oldList[0] += 1
+            if targetList[i] == 1:
+                wholdList[0] += 1
+        elif oldpeakList[i] >= 1 and oldpeakList[i] < 2:
+            oldList[1] += 1
+            if targetList[i] == 1:
+                wholdList[1] += 1
+        elif oldpeakList[i] >= 2 and oldpeakList[i] < 3:
+            oldList[2] += 1
+            if targetList[i] == 1:
+                wholdList[2] += 1
+        elif oldpeakList[i] >= 3 and oldpeakList[i] < 4:
+            oldList[3] += 1
+            if targetList[i] == 1:
+                wholdList[3] += 1
+        elif oldpeakList[i] >= 4 and oldpeakList[i] < 5:
+            oldList[4] += 1
+            if targetList[i] == 1:
+                wholdList[4] += 1
+        elif oldpeakList[i] >= 5 and oldpeakList[i] < 7:
+            oldList[5] += 1
+            if targetList[i] == 1:
+                wholdList[5] += 1
+    for i in range(0, len(oldList)):
+        peroldList.append((wholdList[i]/oldList[i]) * 100)
+    plt.figure()
+    plt.bar(oldxList, peroldList)
+    plt.title("The Effect of ST Depression Induced by Exercise Relative to Rest on Chance of Heart Disease")
+    plt.xlabel("ST Depression (mm)")
+    plt.ylabel("Percent with Heart Disease")
+
+
+
+def slopeGroup():
+    sList = [0, 0, 0]
+    whsList = [0, 0, 0]
+    persList = []
+    sxList = ["0", "1", "2"]
+    for i in range(0, len(slopeList)):
+        if slopeList[i] == 0:
+            sList[0] += 1
+            if targetList[i] == 1:
+                whsList[0] += 1
+        elif slopeList[i] == 1:
+            sList[1] += 1
+            if targetList[i] == 1:
+                whsList[1] += 1
+        elif slopeList[i] == 2:
+            sList[2] += 1
+            if targetList[i] == 1:
+                whsList[2] += 1
+    for i in range(0, len(sList)):
+        persList.append((whsList[i]/sList[i]) * 100)
+    plt.figure()
+    plt.bar(sxList, persList)
+    plt.title("The Effect of the Slope of the Peak Exercise ST Segment on Chance of Heart Disease")
+    plt.xlabel("Slope of the Peak Exercise ST Segment")
+    plt.ylabel("Percent with Heart Disease")
+
+
+ 
+def caGroup():
+    cList = [0, 0, 0, 0, 0]
+    whcList = [0, 0, 0, 0, 0]
+    percList = []
+    cxList = ["0", "1", "2", "3", "4"]
+    for i in range(0, len(caList)):
+        if caList[i] == 0:
+            cList[0] += 1
+            if targetList[i] == 1:
+                whcList[0] += 1
+        elif caList[i] == 1:
+            cList[1] += 1
+            if targetList[i] == 1:
+                whcList[1] += 1
+        elif caList[i] == 2:
+            cList[2] += 1
+            if targetList[i] == 1:
+                whcList[2] += 1
+        elif caList[i] == 3:
+            cList[3] += 1
+            if targetList[i] == 1:
+                whcList[3] += 1
+        elif caList[i] == 4:
+            cList[4] += 1
+            if targetList[i] == 1:
+                whcList[4] += 1
+    for i in range(0, len(cList)):
+        percList.append((whcList[i]/cList[i]) * 100)
+    plt.figure()
+    plt.bar(cxList, percList)
+    plt.title("The Effect of Number of Major Vessels Colored by Fluoroscopy on Chance of Heart Disease")
+    plt.xlabel("Number of Major Vessels Colored by Fluoroscopy")
+    plt.ylabel("Percent with Heart Disease")
+
+
+
+#This main function executes all of the functions stated above
+def main():
+    create()
+    matrix()
+    ageGroup()
+    cpGroup()
+    thalachGroup()
+    exangGroup()
+    oldGroup()
+    slopeGroup()
+    sexGroup()
+    caGroup()
+    plt.show()
+
+
+    
 main()
 
